@@ -1,0 +1,41 @@
+#include <iostream>
+#include <stack>
+#include <cstring>
+
+using namespace std;
+
+int a[6][6];
+bool visited[6];
+
+void DFS(int u) {
+    stack<int> st; 
+    cout << u << ' ';
+    st.push(u);
+    visited[u] = true;
+    while (!st.empty()) {
+        int v = st.top();
+        st.pop();
+        for (int x = 1; x <= 5; x++) {
+            if (a[v][x] && !visited[x]) {
+                cout << x << ' ';
+                visited[x] = true;
+                st.push(v);
+                st.push(x);
+                break;
+            }
+        }
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    } 
+    memset(visited, false, sizeof(visited));
+    DFS(1);
+    return 0;
+}
