@@ -1,0 +1,82 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+struct Edge {
+  int u, v, w;  
+};
+
+int n, a[13][13];
+int parent[13], size[13];
+vector<Edge> canh;
+
+void make_set() {
+    for (int i = 1; i <= n; i++) {
+        parent[i] = i;
+        size[i] = 1;
+    }
+}
+
+int find (int v) {
+    if (v == parent[v]) {
+        return v;
+    }
+    return parent[v] = find(parent[v]);
+}
+
+bool Union (int a, int b) {
+    a = find(a);
+    b = find(b);
+    if (a == b) {
+        return false;
+    }
+    if (size[a] < size[b]) {
+        swap(a, b);
+    }
+    parent[b] = a;
+    size[a] += size[b];
+    return true;
+}
+
+bool cmp (Edge a, Edge b) {
+    if (a.w == b.w) {
+        return a.u < b.u;
+    }
+    return a.w < b.w;
+}
+
+void Kruskal() {
+    vector<Edge> mst;
+    int dH = 0;
+    sort(canh.begin(), canh.end(), cmp);
+    for (int i = 0; i < canh.size(); i++) {
+        if (mst.size() == n - 1) break;
+        Edge e = canh[i];
+        if (Union(e.u, e.v)) {
+            mst.push_back(e);
+            dH += e.w;
+        }
+    }
+    cout << "dH = " << dH << endl;
+    for (auto it : mst) {
+        cout << it.u << ' ' << it.v << endl;
+    }
+}
+
+int main() {
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+            if ((j > i) && a[i][j] != 0) {
+                Edge e = Edge{i, j, a[i][j]};
+                canh.push_back(e);
+            }
+        }
+    }
+    make_set();
+    Kruskal();
+    return 0;
+}
