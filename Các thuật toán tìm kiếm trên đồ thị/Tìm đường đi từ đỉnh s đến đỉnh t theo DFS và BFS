@@ -1,0 +1,83 @@
+#include <iostream>
+#include <stack>
+#include <queue> 
+#include <cstring>
+
+using namespace std;
+
+int a[15][15];
+int previousDFS[15], previousBFS[15];
+bool visitedDFS[15], visitedBFS[15];
+
+void DFS (int u) {
+    stack<int> st;
+    st.push(u);
+    visitedDFS[u] = true;
+    while (!st.empty()) {
+        int v = st.top();
+        st.pop();
+        for (int x = 1; x <= 14; x++) {
+            if (a[v][x] and !visitedDFS[x]) {
+                visitedDFS[x] = true;
+                st.push(v);
+                st.push(x);
+                previousDFS[x] = v;
+                break;
+            }
+        }
+    }
+}
+
+void BFS (int u) {
+    queue<int> q;
+    q.push(u);
+    visitedBFS[u] = true;
+    while (!q.empty()) {
+        int v = q.front();
+        q.pop();
+        for (int x = 1; x <= 14; x++) {
+            if (a[v][x] and !visitedBFS[x]) {
+                visitedBFS[x] = true;
+                q.push(x);
+                previousBFS[x] = v;
+            }
+        }
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    int s, t;
+    cin >> s >> t;
+    int st = s;
+    int en = t;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    }
+    memset(visitedDFS, false, sizeof(visitedDFS));
+    memset(previousDFS, 0, sizeof(previousDFS));
+    memset(visitedBFS, false, sizeof(visitedBFS));
+    memset(previousBFS, 0, sizeof(previousBFS));
+    DFS(s); 
+    BFS(s);
+    if (!previousDFS[t] || !previousBFS[t]){
+        cout << "no path" << endl;
+    } else {
+        cout << "DFS path: ";
+        while (t != s) {
+            cout << t << ' ';
+            t = previousDFS[t];
+        }
+        cout << s << endl;
+        cout << "BFS path: ";
+        while (en != st) {
+            cout << en << ' ';
+            en = previousBFS[en];
+        }
+        cout << st << endl;
+    }
+    return 0;
+}
