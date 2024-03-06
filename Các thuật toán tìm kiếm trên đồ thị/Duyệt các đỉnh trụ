@@ -1,0 +1,42 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+int a[15][15];
+bool visited[15];
+
+void DFS (int u) {
+    visited[u] = true;
+    for (int v = 1; v <= 14; v++) {
+        if (a[u][v] && !visited[v]) {
+            DFS(v);
+        }
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    }
+    int res = 0;
+    for (int i = 1; i <= n; i++) {
+        int tplt = 0;
+        memset(visited, false, sizeof(visited));
+        visited[i] = 1;
+        for (int j = 1; j <= n; j++) {
+            if (!visited[j]) {
+                tplt++;
+                DFS(j);
+            }
+        }
+        if (tplt > 1) {
+            cout << i << ' ';
+        }
+    }
+    return 0;
+}
