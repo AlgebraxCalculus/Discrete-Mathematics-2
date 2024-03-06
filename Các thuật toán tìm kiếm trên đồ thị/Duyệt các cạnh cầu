@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+
+using namespace std;
+
+int a[15][15];
+bool visited[15];
+vector<pair<int, int>> edges;
+
+void DFS1 (int u, int n) {
+    visited[u] = true;
+    for (int v = 1; v <= n; v++) {
+        if (a[u][v] && !visited[v]) {
+            DFS1(v, n);
+        }
+    }
+}
+
+void DFS2 (int u, int s, int t, int n) {
+    visited[u] = true;
+    for (int v = 1; v <= n; v++) {
+        if (a[u][v]) {
+            if (((u == s) && (v == t)) || ((u == t) && (v == s))) {
+                continue;
+            }
+            if (!visited[v]) {
+                DFS2(v, s, t, n);
+            }
+        }
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+            if (i < j) {
+                edges.push_back({i, j});
+            }
+        }
+    }
+    int tplt = 0;
+    memset(visited, false, sizeof(visited));
+    for (int i = 1; i <= n; i++) {
+        if (!visited[i]) {
+            tplt++;
+            DFS1(i, n);
+        }
+    }
+    for (auto it : edges) {
+        int x = it.first;
+        int y = it.second;
+        int cnt = 0;
+        memset(visited, false, sizeof(visited));
+        for (int j = 1; j <= n; j++) {
+            if (!visited[j]) {
+                cnt++;
+                DFS2(j, x, y, n);
+            }
+        }
+        if (cnt > tplt) {
+            cout << x << ' ' << y << endl;
+        }
+    }
+    return 0;
+}
