@@ -1,1 +1,1 @@
-# Discrete-Mathematics-2
+Code phần đồ thị đã AC trên hệ thống LMS
