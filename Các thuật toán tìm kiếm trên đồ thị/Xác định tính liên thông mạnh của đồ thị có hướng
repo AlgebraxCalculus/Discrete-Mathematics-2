@@ -1,0 +1,43 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+int a[15][15];
+bool visited[15];
+
+void DFS (int u, int n) {
+    visited[u] = true;
+    for (int v = 1; v <= n; v++) {
+        if (a[u][v] && !visited[v]) {
+            DFS(v, n);
+        }
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    }
+    int ok = 1;
+    for (int i = 1; i <= n; i++) {
+        memset(visited, false, sizeof(visited));
+        DFS(i, n);
+        for (int j = 1; j <= n; j++) {
+            if (!visited[j]) {
+                ok = 0;
+                break;
+            }
+        }
+    }
+    if (ok) {
+        cout << "strongly connected";
+    } else {
+        cout << "not strongly connected";
+    }
+    return 0;
+}
