@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+
+using namespace std;
+
+int n, v0, a[21][21];
+bool visited[21];
+vector<int> x;
+
+void Store_Hal_Cir (vector<int> &x) {
+    for (int v : x) {
+        if (v != 0) {
+            cout << v << ' ';
+        }
+    }
+    cout << v0 << endl;
+}
+
+void Hamilton (int k) {
+    for (int i = 1; i <= n; i++) {
+        if (a[x[k - 1]][i]) {
+            if (k == n + 1 && i == v0) {
+            Store_Hal_Cir(x);
+            } else if (!visited[i]) {
+                x[k] = i;
+                visited[i] = true;
+                Hamilton(k + 1);
+                visited[i] = false;
+            }
+        }
+    }
+}
+
+int main() {
+    cin >> n >> v0;
+    x.resize(n + 1);
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    }
+    memset(visited, false, sizeof(visited));
+    x[1] = v0;
+    visited[v0] = true;
+    Hamilton(2);
+    return 0;
+} 
