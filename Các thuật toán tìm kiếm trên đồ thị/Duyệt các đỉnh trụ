@@ -23,7 +23,6 @@ int main() {
             cin >> a[i][j];
         }
     }
-    int res = 0;
     for (int i = 1; i <= n; i++) {
         int tplt = 0;
         memset(visited, false, sizeof(visited));
