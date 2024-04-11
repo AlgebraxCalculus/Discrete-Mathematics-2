@@ -62,7 +62,7 @@ int main() {
     memset(visitedBFS, false, sizeof(visitedBFS));
     memset(previousBFS, 0, sizeof(previousBFS));
     DFS(s); 
-    BFS(s);
+    BFS(en);
     if (!previousDFS[t] || !previousBFS[t]){
         cout << "no path" << endl;
     } else {
