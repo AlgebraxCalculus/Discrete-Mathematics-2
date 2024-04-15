@@ -1,0 +1,52 @@
+#include <iostream>
+#include <cstring>
+#include <stack> 
+
+using namespace std;
+
+int a[16][16];
+int visited[16];
+
+void DFS (int u, int ans) {
+    stack<int> st;
+    st.push(u);
+    visited[u] = ans;
+    while (!st.empty()) {
+        int v = st.top();
+        st.pop();
+        for (int x = 1; x <= 15; x++) {
+            if (a[v][x] && !visited[x]) {
+                visited[x] = ans;
+                st.push(v);
+                st.push(x);
+                break;
+            }
+        }
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    }
+    memset(visited, false, sizeof(visited));
+    int ans = 0;
+    for (int i = 1; i <= n; i++) {
+        if (!visited[i]) {
+            cout << "Thanh phan lien thong " << ans + 1 << endl;
+            DFS(i, ans + 1);
+            for (int j = 1; j <= n; j++) {
+                if (visited[j] == ans + 1) {
+                    cout << j << ' ';
+                }
+            }
+            ans++;
+            cout << endl;
+        }
+    }
+return 0;
+}
