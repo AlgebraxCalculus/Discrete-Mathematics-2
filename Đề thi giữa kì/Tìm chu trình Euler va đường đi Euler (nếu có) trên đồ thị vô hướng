@@ -1,0 +1,61 @@
+#include <iostream>
+#include <stack>
+#include <vector>
+
+using namespace std;
+
+int a[14][14];
+vector<int> adj[14];
+
+void Euler (int u) {
+    stack<int> st, CE;
+    st.push(u);
+    while (!st.empty()) {
+        int s = st.top();
+        if (!adj[s].empty()) {
+            int t = adj[s][0];
+            st.push(t);
+            adj[s].erase(adj[s].begin());
+            int vt;
+            for (int i = 0; i < adj[t].size(); i++) {
+                if (adj[t][i] == s) {
+                    vt = i;
+                    break;
+                }
+            }
+            adj[t].erase(adj[t].begin() + vt);
+        } else {
+            st.pop();
+            CE.push(s);
+        }
+    }
+    while (!CE.empty()) {
+        cout << CE.top() << ' ';
+        CE.pop();
+    }
+}
+
+int main() {
+    int n, u;
+    cin >> n >> u;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+            if (a[i][j]) {
+                adj[i].push_back(j);
+            }
+        }
+    }
+    int odd_degree = 0;
+    for (int i = 1; i <= n; i++) {
+    	if (adj[i].size() % 2 != 0) {
+    		odd_degree++;
+		}
+	}
+	if (odd_degree != 0 && odd_degree != 2) {
+		cout << "no Euler cycle";
+	} else {
+		Euler(u);
+	}
+    return 0;
+}
