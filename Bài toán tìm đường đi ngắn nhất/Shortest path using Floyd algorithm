@@ -1,0 +1,44 @@
+#include <iostream>
+
+using namespace std;
+
+int n, a[5][5], Next[5][5];
+
+int main() {
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+            if (a[i][j] == 0 && i != j) {
+                a[i][j] = 1e9;
+            }
+            else if (i == j || a[i][j] == 0) {
+                Next[i][j] = -1;
+            } else {
+                Next[i][j] = j;
+            }
+        }
+    }
+    for (int k = 1; k <= n; k++) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (a[i][j] > a[i][k] + a[k][j]) {
+                    a[i][j] = a[i][k] + a[k][j];
+                    Next[i][j] = Next[i][k];
+                }
+            }
+        }
+    }
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cout << "K/c " << i << " -> " << j << " = " << a[i][j] << ";";
+            int cur = i;
+            while (cur != j) {
+                cout << ' ' << cur << "-->";
+                cur = Next[cur][j];
+            }
+            cout << ' ' << j << endl;
+        }
+    }
+    return 0;
+}
