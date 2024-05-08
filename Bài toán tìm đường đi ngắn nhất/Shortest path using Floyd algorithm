@@ -12,7 +12,7 @@ int main() {
             if (a[i][j] == 0 && i != j) {
                 a[i][j] = 1e9;
             }
-            else if (i == j || a[i][j] == 0) {
+            else if (i == j || a[i][j] == 1e9) {
                 Next[i][j] = -1;
             } else {
                 Next[i][j] = j;
