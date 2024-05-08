@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+
+using namespace std;
+
+int n, s, a[10][10], parent[10], d[10];
+
+void BellmanFord (int s) {
+    for (int i = 1; i <= n; i++) {
+        d[i] = a[s][i];
+        parent[i] = s;
+    }
+    d[s] = 0;
+    for (int k = 1; k <= n - 1; k++) {
+        for (int v = 1; v <= n; v++) {
+            if (v != s) {
+                for (int u = 1; u <= n; u++) {
+                    if (a[u][v] != INT_MAX) {
+                        if (d[u] != INT_MAX && d[v] > d[u] + a[u][v]) {
+                            d[v] = d[u] + a[u][v];
+                            parent[v] = u;
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    cin >> n >> s;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+            if (a[i][j] == 0) {
+                a[i][j] = INT_MAX;
+            }
+        }
+    }
+    BellmanFord(s);
+    for (int i = 1; i <= n; i++) {
+        cout << "K/c " << s << " -> " << i << " = ";
+        if (i == s) {
+            cout << "0; " << s << " <- " << s << endl;
+        } else if (d[i] == INT_MAX) {
+            cout << "INF;" << endl;
+        } else {
+            cout << d[i] << "; ";
+            int j = i;
+            while (j != s) {
+                cout << j << " <- ";
+                j = parent[j];
+            }
+            cout << j << endl;
+        }
+    }
+    return 0;
+}
