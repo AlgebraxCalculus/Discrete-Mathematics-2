@@ -22,7 +22,6 @@ void BellmanFord (int s) {
                             parent[v] = u;
                         }
                     }
-                    
                 }
             }
         }
